@@ -15,9 +15,10 @@
  *
  * usage: node tools/balance-whale-smoke.mjs
  */
-import { existsSync } from 'node:fs'
-import { mkdtemp, readFile, readdir } from 'node:fs/promises'
+import { existsSync, rmSync } from 'node:fs'
+import { mkdir, mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises'
 import { createRequire } from 'node:module'
+import { randomBytes } from 'node:crypto'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -516,9 +517,43 @@ check('patch inserts exactly one row', patch.rows.length === 1, 'parsed with ' +
 check('patch row name matches the package', insertedRow?.name === manifest.name, String(insertedRow?.name))
 check('patch row id', insertedRow?.id === 'balance-whale', String(insertedRow?.id))
 
+// This repository ships no third-party artwork (see CHANGELOG), so a clean
+// checkout has an empty `assets/`. The checks below still need a real skin
+// directory to exercise discovery and image serving, so when the disk has no
+// skin at all a throwaway fixture is written and removed again on exit.
+const SMOKE_SKIN_ID = '__smoke__'
+const smokeSkinDir = join(assetsDir, SMOKE_SKIN_ID)
+
+async function seedSmokeSkin() {
+  if (!existsSync(assetsDir)) return false
+  await mkdir(smokeSkinDir, { recursive: true })
+  // The host only serves declared frames and checks the bytes, not the pixels,
+  // so a signature plus filler is enough to stand in for a 256px frame.
+  const fakePng = Buffer.concat([
+    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+    randomBytes(12_000),
+  ])
+  await writeFile(join(smokeSkinDir, 'idle.png'), fakePng)
+  await writeFile(
+    join(smokeSkinDir, 'skin.json'),
+    JSON.stringify({ name: 'smoke fixture', accent: '#4D6BFE', order: 5, frames: { idle: 'idle.png' } }, null, 2) + '\n',
+  )
+  process.on('exit', () => {
+    try {
+      rmSync(smokeSkinDir, { recursive: true, force: true })
+    } catch {
+      /* best effort: a leftover fixture is ignored by .gitignore */
+    }
+  })
+  return true
+}
+
+if ((await readLocalSkins()).length === 0 && await seedSmokeSkin()) {
+  console.log('note: assets/ holds no artwork, seeded a temporary ' + SMOKE_SKIN_ID + ' fixture')
+}
+
 const localSkins = await readLocalSkins()
 check('skin manifests are on disk', localSkins.length > 0, JSON.stringify(localSkins.map((skin) => skin.id)))
-
 // ---------------------------------------------------------------------------
 
 section('host half: routes and money math')

@@ -12,6 +12,9 @@ __pycache__/
 # 原始立绘：只用来喂 tools/prepare-skins.py，不作为皮肤发布
 raw/
 
+# 自检临时造出来的皮肤夹具（正常会自动删除，这里是保险）
+/assets/__smoke__/
+
 # 本地账本 / 调试产物
 *.log
 *.tmp

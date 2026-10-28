@@ -300,8 +300,11 @@ def command_check(assets: str) -> int:
     problems: list[str] = []
     skins = discover(assets, problems)
     if not skins and not problems:
-        print("no skins under " + assets)
-        return 1
+        # A clean checkout ships no art on purpose (only the built-in SVG whale),
+        # so an empty assets/ is valid: nothing to validate.
+        print("no local skins under " + assets + " (the built-in whale-classic needs no files)")
+        print("all manifests and frames are valid")
+        return 0
     for skin in skins:
         skin_dir = os.path.join(assets, skin["id"])
         manifest_path = os.path.join(skin_dir, "skin.json")
