@@ -2,6 +2,8 @@
 
 [![smoke](https://github.com/CLxingxi/dsh-balance-whale/actions/workflows/smoke.yml/badge.svg)](https://github.com/CLxingxi/dsh-balance-whale/actions/workflows/smoke.yml)
 
+![小鲸鱼挂件预览](docs/preview.gif)
+
 一只住在 DeepSeek Harness Web 界面里的 Q 弹小鲸鱼：常驻显示 DeepSeek 账户余额，按工作状态切换表情，
 会说小气泡，会发出可爱的音效，并帮你记账（今日已用 / 上一轮消耗 / 本次启动 / 近 7 天柱状图）。
 
@@ -46,12 +48,13 @@ pnpm install
 ## 功能
 
 
-### 皮肤（含上传的立绘）
-- 内置 6 套皮肤：`女仆小鲸鱼`（3 张表情帧：平常 / 笑 / 脸红）、`白龙小姐`、`暗夜飞鱼`、
-  `银发小鲸鱼`、`紫罗兰精灵`，以及手绘的 `深海经典鲸`。
+### 皮肤
+- 自带一套手绘皮肤 `深海经典鲸`（纯 SVG 画在插件里，不依赖任何图片文件）。
+- **立绘皮肤请自己放**：本仓库不附带第三方立绘。把图片放进 `assets/<id>/`（一个 `skin.json` + 每个心情一张图），
+  重启后就会出现在皮肤选择器里；`tools/prepare-skins.py` 负责裁切、居中、抠底色并写好 `skin.json`。
 - 卡片里点「皮肤」展开选择器，选中即换、立即记住（`localStorage`，与账号无关）。
 - 图片由 Host 半按需从包内 `assets/<skin>/` 提供（仅回环、仅清单内文件、带缓存头），
-  想加皮肤只需新建 `assets/<id>/skin.json` + 图片，刷新即出现在选择器里。
+  选择器只列出 `assets/` 下带合法 `skin.json` 的目录。
 
 ### 表情（随工作状态自动切换）
 - 状态：`idle` 平常 / `working` 工作中 / `happy` 开心 / `worried` 担心 / `excited` 拖动兴奋 /
@@ -94,7 +97,7 @@ pnpm install
 | `cordis.patch.yml` | 插入一行 `balance-whale`，同时挂起 Host 与 Browser 两半 |
 | `index.js` | Host 半：余额读取、工作状态跟踪、账本、皮肤清单与图片路由 |
 | `client.js` | Browser 半：`window.__ModuleLoader__.load({ id, factory })` 懒工厂，注册 `shell.overlay` 槽位 |
-| `assets/<skin>/` | 皮肤：`skin.json`（名称/主色/帧表）+ PNG（由 `tools/prepare-skins.py` 从原始立绘裁切生成） |
+| `assets/<skin>/` | 皮肤：`skin.json`（名称/主色/帧表）+ 各心情图片，由 `tools/prepare-skins.py` 生成。仓库只留 `.gitkeep`，立绘由使用者自己添加 |
 | `icon.svg` | 插件管理页图标 |
 
 ## 接口（同源、仅回环）
@@ -162,5 +165,7 @@ python tools/prepare-skins.py --check     # 皮肤清单与图片
 
 ## 许可证
 
-[MIT](LICENSE)。`assets/` 下的立绘是挂件皮肤的展示素材，若要单独再分发或商用，请先确认素材来源的授权。
+[MIT](LICENSE)，覆盖代码、`docs/` 与内置的手绘 `深海经典鲸`。
+
+`assets/` 下由你自己添加的立绘不在此范围内——那属于你或原作者，请按素材自身的授权使用。
 

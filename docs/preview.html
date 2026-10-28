@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>dsh-balance-whale · preview</title>
+<!--
+  README 预览图的源文件。
+
+  图形（下方 #whale 里的 SVG）与关键帧样式都镜像自 client.js 的 WHALE_SVG 与 CSS：
+  改挂件外观后，请同步更新这份文件，然后执行
+
+      python tools/make-preview.py
+
+  它会用无头浏览器逐帧渲染本页并合成 docs/preview.gif。这是一张文档插图，不参与挂件运行时。
+-->
+<style>
+  :root {
+    --bg-overlay: #141d33;
+    --border-l2: #2a3653;
+    --label-primary: #e8eeff;
+    --label-secondary: #9fb0d6;
+    --state-success: #3dd68c;
+    --brand: #4d6bfe;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #070b16;
+  }
+
+  body {
+    display: grid;
+    place-items: center;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    background:
+      radial-gradient(120% 120% at 22% 8%, #1d2a52 0%, #0d1428 55%, #070b16 100%);
+    color: var(--label-primary);
+  }
+
+  /* 背景里一点横向暗纹，避免大片纯色 */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      180deg, rgba(255, 255, 255, .022) 0 1px, transparent 1px 4px);
+    pointer-events: none;
+  }
+
+  .stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ---------- 气泡：镜像 .bw-bubble ---------- */
+  .bubble {
+    position: relative;
+    max-width: 260px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: var(--bg-overlay);
+    border: 1px solid var(--border-l2);
+    box-shadow: 0 8px 20px rgba(24, 39, 75, .18);
+    font-size: 14px;
+    line-height: 1.35;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .bubble[data-tone="work"] { border-color: var(--brand); }
+  .bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    margin-left: -4px;
+    background: var(--bg-overlay);
+    border-right: 1px solid var(--brand);
+    border-bottom: 1px solid var(--brand);
+    transform: rotate(45deg) translateY(-5px);
+  }
+
+  /* ---------- 鲸鱼：镜像 .bw-spring / .bw-flip / .bw-art* ---------- */
+  .whale {
+    width: 236px;
+    height: 236px;
+    animation: bw-idle 3.6s ease-in-out infinite;
+    transform-origin: 50% 68%;
+  }
+
+  .bw-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    filter: drop-shadow(0 8px 14px rgba(24, 39, 75, .22));
+  }
+
+  .bw-art-inner {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .bw-whale-body {
+    transform-origin: 62px 72px;
+    animation: bw-breathe 3.6s ease-in-out infinite;
+  }
+
+  .bw-tail {
+    transform-origin: 28px 60px;
+    animation: bw-wag 2.9s ease-in-out infinite;
+  }
+
+  .bw-drop { animation: bw-drop 2.7s ease-in-out infinite; }
+  .bw-drop-2 { animation-delay: .32s; }
+  .bw-drop-3 { animation-delay: .64s; }
+
+  .bw-coin {
+    opacity: 1;
+    transform-origin: 104px 30px;
+    animation: bw-coin .95s ease-in-out infinite;
+  }
+
+  @keyframes bw-idle {
+    0%, 100% { transform: scale(1, 1); }
+    50% { transform: scale(1.045, .955); }
+  }
+  @keyframes bw-breathe {
+    0%, 100% { transform: scale(1, 1); }
+    50% { transform: scale(1.025, .975); }
+  }
+  @keyframes bw-wag {
+    0%, 72%, 100% { transform: rotate(0deg); }
+    82% { transform: rotate(-11deg); }
+    92% { transform: rotate(7deg); }
+  }
+  @keyframes bw-drop {
+    0% { opacity: 0; transform: translateY(4px) scale(.7); }
+    35% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-9px) scale(1.05); }
+  }
+  @keyframes bw-coin {
+    0%, 100% { transform: translateY(0) rotate(-8deg); }
+    50% { transform: translateY(-4px) rotate(8deg); }
+  }
+
+  /* ---------- 余额药丸：镜像 .bw-pill ---------- */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--bg-overlay);
+    border: 1px solid var(--border-l2);
+    box-shadow: 0 6px 16px rgba(24, 39, 75, .16);
+    font-size: 17px;
+    font-weight: 650;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--state-success);
+    flex: none;
+  }
+
+  .cur {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--label-secondary);
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+    color: var(--label-primary);
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="bubble" data-tone="work">这轮花了 ¥0.42，喝口水吧～</div>
+
+    <div class="whale">
+      <div class="bw-art-inner" data-busy="1">
+        <svg class="bw-art" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="bwGradBody" x1="0.15" y1="0" x2="0.85" y2="1">
+              <stop offset="0" stop-color="#93B7FF"/><stop offset="0.45" stop-color="#5B7BFF"/><stop offset="1" stop-color="#2C42C2"/>
+            </linearGradient>
+            <linearGradient id="bwGradBelly" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.97"/><stop offset="1" stop-color="#D3E1FF" stop-opacity="0.93"/>
+            </linearGradient>
+            <radialGradient id="bwGradGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#9CC0FF" stop-opacity="0.42"/><stop offset="1" stop-color="#9CC0FF" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <ellipse class="bw-glow" cx="60" cy="92" rx="46" ry="20" fill="url(#bwGradGlow)"/>
+          <g class="bw-whale-body">
+            <path class="bw-tail" d="M28 68c-10-2-19-10-20-19-1-8 5-14 11-12 5 1 8 6 10 12 2 7 3 13-1 19z" fill="url(#bwGradBody)"/>
+            <path class="bw-tail" d="M28 68c-11 5-23 4-29-2-4-4-4-11 1-13 5-2 11 1 15 5 4 4 8 8 13 10z" fill="#3B54D6"/>
+            <ellipse class="bw-fin bw-fin-left" cx="36" cy="90" rx="14" ry="8.4" transform="rotate(-22 36 90)" fill="#3A52CE"/>
+            <ellipse class="bw-fin bw-fin-right" cx="90" cy="86" rx="13" ry="7.8" transform="rotate(16 90 86)" fill="#6C89FF"/>
+            <path d="M62 26c27 0 46 19 46 42 0 24-20 39-46 39S16 92 16 68c0-23 19-42 46-42z" fill="url(#bwGradBody)"/>
+            <path d="M62 104c-19 0-34-12-37-29 9-10 22-15 37-15s28 5 37 15c-3 17-18 29-37 29z" fill="url(#bwGradBelly)"/>
+            <path d="M40 96h44M45 102h34" stroke="#B4C8FF" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.72"/>
+            <g class="bw-eyes bw-eyes-open">
+              <ellipse cx="47" cy="60" rx="6.6" ry="7.6" fill="#16203F"/>
+              <ellipse cx="77" cy="60" rx="6.6" ry="7.6" fill="#16203F"/>
+              <circle cx="49.6" cy="56.6" r="2.5" fill="#FFFFFF"/>
+              <circle cx="79.6" cy="56.6" r="2.5" fill="#FFFFFF"/>
+              <circle cx="45" cy="63.8" r="1.15" fill="#FFFFFF" opacity="0.85"/>
+              <circle cx="75" cy="63.8" r="1.15" fill="#FFFFFF" opacity="0.85"/>
+            </g>
+            <ellipse class="bw-blush" cx="34" cy="72" rx="6" ry="3.4" fill="#FF9DB8" opacity="0.5"/>
+            <ellipse class="bw-blush" cx="90" cy="72" rx="6" ry="3.4" fill="#FF9DB8" opacity="0.5"/>
+            <path d="M56 72q6 7 12 0" stroke="#16203F" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <g class="bw-spout">
+              <path d="M64 26c-1-6 2-10 8-12" stroke="#9CC0FF" stroke-width="2.6" fill="none" stroke-linecap="round" opacity="0.85"/>
+              <circle class="bw-drop bw-drop-1" cx="73" cy="11" r="3" fill="#A8C8FF"/>
+              <circle class="bw-drop bw-drop-2" cx="66" cy="5" r="2.2" fill="#C3D9FF"/>
+              <circle class="bw-drop bw-drop-3" cx="79" cy="4" r="1.7" fill="#D8E6FF"/>
+            </g>
+            <g class="bw-coin">
+              <circle cx="104" cy="30" r="13" fill="#FFC94D" stroke="#F0A800" stroke-width="2"/>
+              <text x="104" y="36" text-anchor="middle" font-size="15" font-weight="700" fill="#8A5200"
+                font-family="system-ui,-apple-system,Segoe UI,sans-serif">¥</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div class="pill">
+      <span class="dot"></span>
+      <span class="cur">¥</span>
+      <span class="num">12.34</span>
+    </div>
+  </div>
+</body>
+</html>
