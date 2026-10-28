@@ -1,0 +1,55 @@
+{
+  "name": "dsh-balance-whale",
+  "version": "1.0.0",
+  "description": "小鲸鱼余额挂件：常驻 DSH 界面右下角，实时显示 DeepSeek 账户余额，QQ 弹弹、拖拽吸附、左吸附翻转、数字滚动动画",
+  "type": "module",
+  "icon": "./icon.svg",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "icon.svg",
+    "assets",
+    "tools",
+    "README.md",
+    "LICENSE"
+  ],
+  "license": "MIT",
+  "author": "CLxingxi",
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "balance",
+    "widget",
+    "whale"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CLxingxi/dsh-balance-whale.git"
+  },
+  "homepage": "https://github.com/CLxingxi/dsh-balance-whale#readme",
+  "bugs": {
+    "url": "https://github.com/CLxingxi/dsh-balance-whale/issues"
+  },
+  "dsh": {
+    "engines": {
+      "dsh": ">=0.2.0-rc.1"
+    },
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  }
+}

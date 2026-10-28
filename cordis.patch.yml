@@ -1,0 +1,9 @@
+# dsh-balance-whale bundle patch: one row mounts BOTH halves of the widget.
+# The host half (./index.js) serves the browser half's same-origin JSON
+# endpoint '/api/balance-whale/state', which reads the live DeepSeek account
+# balance through the Host-only `ctx.deepseekAccount` service. The client half
+# (./client.js) is the floating whale itself, rendered into the frame-wide
+# 'shell.overlay' slot the layout plugin declares.
+- insert:
+    - id: balance-whale
+      name: 'dsh-balance-whale'

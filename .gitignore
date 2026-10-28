@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+
+# 原始立绘：只用来喂 tools/prepare-skins.py，不作为皮肤发布
+raw/
+
+# 本地账本 / 调试产物
+*.log
+*.tmp
+ledger.json
+
+# os
+.DS_Store
+Thumbs.db
+desktop.ini

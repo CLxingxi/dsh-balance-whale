@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="小鲸鱼余额挂件">
+  <defs>
+    <linearGradient id="iconBody" x1="0.2" y1="0" x2="0.8" y2="1">
+      <stop offset="0" stop-color="#93B7FF"/>
+      <stop offset="0.5" stop-color="#5B7BFF"/>
+      <stop offset="1" stop-color="#2C42C2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0F1730"/>
+  <path d="M16 38c-5-1-9-5-9-9 0-4 3-6 6-5 3 1 4 3 5 6 1 3 1 6-2 8z" fill="url(#iconBody)"/>
+  <path d="M32 16c13 0 22 9 22 20 0 11-9 18-22 18S10 47 10 36c0-11 9-20 22-20z" fill="url(#iconBody)"/>
+  <path d="M32 52c-9 0-16-5-18-13 4-5 11-7 18-7s14 2 18 7c-2 8-9 13-18 13z" fill="#EAF1FF" opacity="0.95"/>
+  <circle cx="24" cy="31" r="3.2" fill="#16203F"/>
+  <circle cx="41" cy="31" r="3.2" fill="#16203F"/>
+  <circle cx="25.2" cy="29.6" r="1.2" fill="#FFFFFF"/>
+  <circle cx="42.2" cy="29.6" r="1.2" fill="#FFFFFF"/>
+  <path d="M29 38q3.5 4 7 0" stroke="#16203F" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  <circle cx="54" cy="14" r="7" fill="#FFC94D" stroke="#F0A800" stroke-width="1.6"/>
+  <text x="54" y="18" text-anchor="middle" font-size="9" font-weight="700" fill="#8A5200" font-family="system-ui, sans-serif">¥</text>
+</svg>
