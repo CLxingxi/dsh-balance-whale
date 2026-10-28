@@ -1,0 +1,8 @@
+# 源码统一 LF 落库，避免 Windows 上的 CRLF 污染 diff 与 CI
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.webp binary
+*.gif binary
